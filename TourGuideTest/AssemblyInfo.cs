@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GpsUtil.Location
-{
-    public class Location
-    {
-    }
-}
+[assembly: Xunit.CollectionBehavior(DisableTestParallelization = true)]
+
+namespace TourGuideTest;
