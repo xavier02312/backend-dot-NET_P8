@@ -21,7 +21,7 @@ public class RewardServiceTest : IClassFixture<DependencyFixture>
     [Fact]
     public void UserGetRewards()
     {
-        InternalTestHelper.SetInternalUserNumber(0);
+        _fixture.Initialize(0);
         var user = new User(Guid.NewGuid(), "jon", "000", "jon@tourGuide.com");
         var attraction = _fixture.GpsUtil.GetAttractions().First();
         user.AddToVisitedLocations(new VisitedLocation(user.UserId, attraction, DateTime.Now));
@@ -38,12 +38,13 @@ public class RewardServiceTest : IClassFixture<DependencyFixture>
         Assert.True(_fixture.RewardsService.IsWithinAttractionProximity(attraction, attraction));
     }
 
-    [Fact(Skip = "Needs fixed - can throw ConcurrentModificationException")]
+    // Needs fixed - can throw ConcurrencyException
+    [Fact]
     public void NearAllAttractions()
     {
+        _fixture.Initialize(1);
         _fixture.RewardsService.SetProximityBuffer(int.MaxValue);
 
-        InternalTestHelper.SetInternalUserNumber(1);
         var user = _fixture.TourGuideService.GetAllUsers().First();
         _fixture.RewardsService.CalculateRewards(user);
         var userRewards = _fixture.TourGuideService.GetUserRewards(user);

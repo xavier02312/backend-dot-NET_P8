@@ -23,10 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Api\TourGuide.csproj" />
     <ProjectReference Include="..\GpsUtil\GpsUtil.csproj" />
     <ProjectReference Include="..\RewardCentral\RewardCentral.csproj" />
     <ProjectReference Include="..\TripPricer\TripPricer.csproj" />
-    <ProjectReference Include="..\WebApplication1\TourGuide.csproj" />
   </ItemGroup>
 
 </Project>

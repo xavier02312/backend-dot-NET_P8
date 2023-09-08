@@ -2,7 +2,7 @@
 
 public static class InternalTestHelper
 {
-    // Set this default up to 100,000 for testing
+    // Default value but can be more during test
     private static int internalUserNumber = 100;
 
     public static void SetInternalUserNumber(int number)

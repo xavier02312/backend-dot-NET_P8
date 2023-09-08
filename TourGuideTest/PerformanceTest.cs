@@ -19,18 +19,14 @@ namespace TourGuideTest
         public PerformanceTest(DependencyFixture fixture)
         {
             _fixture = fixture;
-            //Initialiser ici le nombre d'utilisateur que vous voulez
-            _fixture.Initialize(1000);
-        }
-
-        public void Dispose()
-        {
-            _fixture.Cleanup();
         }
 
         [Fact]
         public void HighVolumeTrackLocation()
-        {            
+        {
+            //On peut ici augmenter le nombre d'utilisateurs pour tester les performances
+            _fixture.Initialize(10);
+
             List<User> allUsers = _fixture.TourGuideService.GetAllUsers();
 
             Stopwatch stopWatch = new Stopwatch();
@@ -50,7 +46,10 @@ namespace TourGuideTest
 
         [Fact]
         public void HighVolumeGetRewards()
-        {           
+        {
+            //On peut ici augmenter le nombre d'utilisateurs pour tester les performances
+            _fixture.Initialize(10);
+
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
 
