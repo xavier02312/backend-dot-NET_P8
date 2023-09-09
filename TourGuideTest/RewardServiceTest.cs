@@ -38,7 +38,7 @@ public class RewardServiceTest : IClassFixture<DependencyFixture>
         Assert.True(_fixture.RewardsService.IsWithinAttractionProximity(attraction, attraction));
     }
 
-    // Needs fixed - can throw ConcurrencyException
+    // Needs fixed - can throw InvalidOperationException
     [Fact]
     public void NearAllAttractions()
     {
