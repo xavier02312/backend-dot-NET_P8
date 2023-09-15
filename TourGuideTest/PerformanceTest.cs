@@ -15,6 +15,25 @@ namespace TourGuideTest
 {
     public class PerformanceTest : IClassFixture<DependencyFixture>
     {
+        /*
+         * Note on performance improvements:
+         * 
+         * The number of generated users for high-volume tests can be easily adjusted using this method:
+         * 
+         *_fixture.Initialize(100000); (for example)
+         * 
+         * 
+         * These tests can be modified to fit new solutions, as long as the performance metrics at the end of the tests remain consistent.
+         * 
+         * These are the performance metrics we aim to achieve:
+         * 
+         * highVolumeTrackLocation: 100,000 users within 15 minutes:
+         * Assert.True(TimeSpan.FromMinutes(15).TotalSeconds >= stopWatch.Elapsed.TotalSeconds);
+         *
+         * highVolumeGetRewards: 100,000 users within 20 minutes:
+         * Assert.True(TimeSpan.FromMinutes(20).TotalSeconds >= stopWatch.Elapsed.TotalSeconds);
+        */
+
         private readonly DependencyFixture _fixture;
 
         private readonly ITestOutputHelper _output;
@@ -25,7 +44,7 @@ namespace TourGuideTest
             _output = output;
         }
 
-        [Fact(Skip =("Delete Skip when you want to pass the test"))]
+        [Fact(Skip = ("Delete Skip when you want to pass the test"))]
         public void HighVolumeTrackLocation()
         {
             //On peut ici augmenter le nombre d'utilisateurs pour tester les performances
@@ -48,7 +67,7 @@ namespace TourGuideTest
             Assert.True(TimeSpan.FromMinutes(15).TotalSeconds >= stopWatch.Elapsed.TotalSeconds);
         }
 
-        [Fact(Skip =("Delete Skip when you want to pass the test"))]
+        [Fact(Skip = ("Delete Skip when you want to pass the test"))]
         public void HighVolumeGetRewards()
         {
             //On peut ici augmenter le nombre d'utilisateurs pour tester les performances
