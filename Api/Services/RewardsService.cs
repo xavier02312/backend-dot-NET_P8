@@ -37,19 +37,28 @@ public class RewardsService : IRewardsService
         count++;
         List<VisitedLocation> userLocations = user.VisitedLocations;
         List<Attraction> attractions = _gpsUtil.GetAttractions();
+        //  Liste pour stocker les récompenses
+        List<UserReward> newRewards = new List<UserReward>();
 
-        foreach (var visitedLocation in userLocations)
+        //  Une boucle for inversée parcourir la liste sans créer une copie
+        for (int i = userLocations.Count - 1; i >= 0; i--)
         {
+            var visitedLocation = userLocations[i];
             foreach (var attraction in attractions)
             {
                 if (!user.UserRewards.Any(r => r.Attraction.AttractionName == attraction.AttractionName))
                 {
                     if (NearAttraction(visitedLocation, attraction))
                     {
-                        user.AddUserReward(new UserReward(visitedLocation, attraction, GetRewardPoints(attraction, user)));
+                        newRewards.Add(new UserReward(visitedLocation, attraction, GetRewardPoints(attraction, user)));
                     }
                 }
             }
+        }
+
+        foreach (var reward in newRewards)
+        {
+            user.AddUserReward(reward);
         }
     }
 
