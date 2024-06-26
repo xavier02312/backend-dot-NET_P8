@@ -37,10 +37,8 @@ public class RewardsService : IRewardsService
         count++;
         List<VisitedLocation> userLocations = user.VisitedLocations;
         List<Attraction> attractions = _gpsUtil.GetAttractions();
-        //  Liste pour stocker les récompenses
-        List<UserReward> newRewards = new List<UserReward>();
 
-        //  Une boucle for inversée parcourir la liste sans créer une copie
+        //  Une boucle for inversée parcourir la liste
         for (int i = userLocations.Count - 1; i >= 0; i--)
         {
             var visitedLocation = userLocations[i];
@@ -50,16 +48,19 @@ public class RewardsService : IRewardsService
                 {
                     if (NearAttraction(visitedLocation, attraction))
                     {
-                        newRewards.Add(new UserReward(visitedLocation, attraction, GetRewardPoints(attraction, user)));
+                        // Calcule les points de récompense pour cette attraction
+                        int rewardPoints = GetRewardPoints(attraction, user);
+
+                        // Crée une nouvelle récompense pour l'utilisateur
+                        UserReward newReward = new UserReward(visitedLocation, attraction, rewardPoints);
+
+                        // Ajoute la nouvelle récompense à la liste des récompenses de l'utilisateur
+                        user.AddUserReward(newReward);
                     }
                 }
             }
         }
 
-        foreach (var reward in newRewards)
-        {
-            user.AddUserReward(reward);
-        }
     }
 
     public bool IsWithinAttractionProximity(Attraction attraction, Locations location)
