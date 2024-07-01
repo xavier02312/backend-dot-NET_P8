@@ -93,12 +93,16 @@ public class TourGuideService : ITourGuideService
     public List<Attraction> GetNearByAttractions(VisitedLocation visitedLocation)
     {
         List<Attraction> nearbyAttractions = new ();
-        foreach (var attraction in _gpsUtil.GetAttractions())
+        foreach (var attraction in _gpsUtil.GetAttractions())/* j'ai supprimer le if */
         {
-            if (_rewardsService.IsWithinAttractionProximity(attraction, visitedLocation.Location))
-            {
+            _rewardsService.IsWithinAttractionProximity(attraction, visitedLocation.Location);
+            
                 nearbyAttractions.Add(attraction);
-            }
+                if (nearbyAttractions.Count == 5) // arrête d'ajouter des attractions une fois que nous en avons 5
+                {
+                    break;
+                }
+            
         }
 
         return nearbyAttractions;
