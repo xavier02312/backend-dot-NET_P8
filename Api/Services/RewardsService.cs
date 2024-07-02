@@ -39,7 +39,8 @@ public class RewardsService : IRewardsService
         List<Attraction> attractions = _gpsUtil.GetAttractions();
 
         //  Une boucle for inversée parcourir la liste
-        for (int i = userLocations.Count - 1; i >= 0; i--)
+        int i = 0;
+        for (i = userLocations.Count - 1; i >= 0; i--)
         {
             var visitedLocation = userLocations[i];
             foreach (var attraction in attractions)

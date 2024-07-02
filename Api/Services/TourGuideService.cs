@@ -35,6 +35,16 @@ public class TourGuideService : ITourGuideService
             _logger.LogInformation("TestMode enabled");
             _logger.LogDebug("Initializing users");
             InitializeInternalUsers();
+            // Crée un nouvel utilisateur "xavier"
+            Guid userId = Guid.NewGuid(); // Génère un nouvel identifiant unique
+            string userName = "xavier";
+            string phoneNumber = "123-456-7890"; // Remplacez par le numéro de téléphone réel
+            string emailAddress = "xavier@example.com"; // Remplacez par l'adresse e-mail réelle
+
+            User xavier = new User(userId, userName, phoneNumber, emailAddress);
+
+            // Ajoute "xavier" à la carte des utilisateurs internes
+            _internalUserMap.Add(xavier.UserName, xavier);
             _logger.LogDebug("Finished initializing users");
         }
 
