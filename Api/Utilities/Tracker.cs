@@ -9,10 +9,10 @@ public class Tracker
 {
     private readonly ILogger<Tracker> _logger;
     private static readonly TimeSpan TrackingPollingInterval = TimeSpan.FromMinutes(5);
-    private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
     private readonly ITourGuideService _tourGuideService;
 
-    public Tracker(ITourGuideService tourGuideService, ILogger<Tracker> logger)
+    public Tracker(ITourGuideService tourGuideService, ILogger<Tracker> logger) 
     {
         _tourGuideService = tourGuideService;
         _logger = logger;
@@ -36,7 +36,11 @@ public class Tracker
 
             stopwatch.Start();
 
-            users.ForEach(u => _tourGuideService.TrackUserLocation(u));
+            /*users.ForEach(u => _tourGuideService.TrackUserLocation(u));*/
+            // Utilisons Task.Run pour déplacer le travail de suivi de l’emplacement de l’utilisateur sur un autre thread.
+            var tasks = users.Select(user => Task.Run(async () => await _tourGuideService.TrackUserLocation(user)));
+            // Utilisons Task.WhenAll pour attendre que toutes les tâches se terminent
+            await Task.WhenAll(tasks);
 
             stopwatch.Stop();
 

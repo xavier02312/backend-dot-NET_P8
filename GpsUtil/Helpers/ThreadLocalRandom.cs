@@ -8,7 +8,7 @@ namespace GpsUtil.Helpers;
 
 internal static class ThreadLocalRandom
 {
-    private static readonly ThreadLocal<Random> threadLocal = new ThreadLocal<Random>(() => new Random());
+    private static readonly ThreadLocal<Random> threadLocal = new(() => new Random());
 
     public static Random Current => threadLocal.Value;
 

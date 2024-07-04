@@ -11,8 +11,8 @@ public class TripPricer
 {
     public List<Provider> GetPrice(string apiKey, Guid attractionId, int adults, int children, int nightsStay, int rewardsPoints)
     {
-        List<Provider> providers = new List<Provider>();
-        HashSet<string> providersUsed = new HashSet<string>();
+        List<Provider> providers = new();
+        HashSet<string> providersUsed = new();
 
         // Sleep to simulate some latency
         Thread.Sleep(ThreadLocalRandom.Current.Next(1, 50));

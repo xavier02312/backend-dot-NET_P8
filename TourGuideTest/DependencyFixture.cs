@@ -24,7 +24,7 @@ namespace TourGuideTest
             Initialize();
         }
 
-        public void Initialize(int internalUserNumber = 100)
+        public void Initialize(int internalUserNumber = 99) /* + xavier */
         {
             var loggerFactory = LoggerFactory.Create(builder =>
             {

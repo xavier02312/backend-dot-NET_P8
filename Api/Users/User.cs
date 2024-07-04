@@ -15,7 +15,7 @@ public class User
     public UserPreferences UserPreferences { get; set; } = new UserPreferences();
     public List<Provider> TripDeals { get; set; } = new List<Provider>();
 
-    public User(Guid userId, string userName, string phoneNumber, string emailAddress)
+    public User(Guid userId, string userName, string phoneNumber, string emailAddress) 
     {
         UserId = userId;
         UserName = userName;
@@ -23,7 +23,7 @@ public class User
         EmailAddress = emailAddress;
     }
 
-    public void AddToVisitedLocations(VisitedLocation visitedLocation)
+    public void AddToVisitedLocations(VisitedLocation visitedLocation) 
     {
         VisitedLocations.Add(visitedLocation);
     }

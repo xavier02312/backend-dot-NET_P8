@@ -2,15 +2,15 @@
 
 public static class InternalTestHelper
 {
-    // Default value but can be more during test
-    private static int internalUserNumber = 100;
+    // Default value but can be more during test + xavier 
+    private static int internalUserNumber = 99;
 
-    public static void SetInternalUserNumber(int number)
+    public static void SetInternalUserNumber(int number) 
     {
         internalUserNumber = number;
     }
 
-    public static int GetInternalUserNumber()
+    public static int GetInternalUserNumber() 
     {
         return internalUserNumber;
     }

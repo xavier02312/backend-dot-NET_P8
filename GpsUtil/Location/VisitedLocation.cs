@@ -12,7 +12,7 @@ public class VisitedLocation
     public Locations Location { get; }
     public DateTime TimeVisited { get; }
 
-    public VisitedLocation(Guid userId, Locations location, DateTime timeVisited)
+    public VisitedLocation(Guid userId, Locations location, DateTime timeVisited) 
     {
         UserId = userId;
         Location = location;

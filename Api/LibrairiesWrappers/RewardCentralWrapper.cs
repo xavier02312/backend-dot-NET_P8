@@ -6,7 +6,7 @@ namespace TourGuide.LibrairiesWrappers
     {
         private readonly RewardCentral.RewardCentral _rewardCentral;
 
-        public RewardCentralWrapper()
+        public RewardCentralWrapper() 
         {
             _rewardCentral = new ();
         }

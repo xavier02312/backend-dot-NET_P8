@@ -32,11 +32,11 @@ public class RewardsService : IRewardsService
         _proximityBuffer = _defaultProximityBuffer;
     }
 
-    public void CalculateRewards(User user)
+    public async Task CalculateRewards(User user) /* ici perf */
     {
         //count++;
         List<VisitedLocation> userLocations = user.VisitedLocations;
-        List<Attraction> attractions = _gpsUtil.GetAttractions();
+        List<Attraction> attractions = await _gpsUtil.GetAttractions();
 
         //  Une boucle for inversée parcourir la liste
         int i = 0;
@@ -53,7 +53,7 @@ public class RewardsService : IRewardsService
                         int rewardPoints = GetRewardPoints(attraction, user);
 
                         // Crée une nouvelle récompense pour l'utilisateur
-                        UserReward newReward = new UserReward(visitedLocation, attraction, rewardPoints);
+                        UserReward newReward = new(visitedLocation, attraction, rewardPoints);
 
                         // Ajoute la nouvelle récompense à la liste des récompenses de l'utilisateur
                         user.AddUserReward(newReward);

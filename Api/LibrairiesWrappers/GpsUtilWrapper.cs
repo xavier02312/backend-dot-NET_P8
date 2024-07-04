@@ -7,18 +7,18 @@ public class GpsUtilWrapper : IGpsUtil
 {
     private readonly GpsUtil.GpsUtil _gpsUtil;
 
-    public GpsUtilWrapper()
+    public GpsUtilWrapper() 
     {
         _gpsUtil = new();
     }
 
-    public VisitedLocation GetUserLocation(Guid userId)
+    public async Task<VisitedLocation> GetUserLocation(Guid userId)/* ici perf */
     {
-        return _gpsUtil.GetUserLocation(userId);
+        return await _gpsUtil.GetUserLocation(userId);
     }
 
-    public List<Attraction> GetAttractions()
+    public async Task<List<Attraction>> GetAttractions() /* ici perf */
     {
-        return _gpsUtil.GetAttractions();
+        return await _gpsUtil.GetAttractions();
     }
 }

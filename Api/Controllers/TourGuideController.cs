@@ -23,9 +23,9 @@ public class TourGuideController : ControllerBase
     }
 
     [HttpGet("getLocation")]
-    public ActionResult<VisitedLocation> GetLocation([FromQuery] string userName)
+    public async Task<ActionResult<VisitedLocation>> GetLocation([FromQuery] string userName)
     {
-        var location = _tourGuideService.GetUserLocation(GetUser(userName));
+        var location = await _tourGuideService.GetUserLocation(GetUser(userName));
         return Ok(location);
     }
 
@@ -39,11 +39,11 @@ public class TourGuideController : ControllerBase
     // The reward points for visiting each Attraction.
     //    Note: Attraction reward points can be gathered from RewardsCentral
     [HttpGet("getNearbyAttractions")]
-    public ActionResult<List<object>> GetNearbyAttractions([FromQuery] string userName)
+    public async Task<ActionResult<List<object>>> GetNearbyAttractions([FromQuery] string userName)
     {
         var user = GetUser(userName);
-        var visitedLocation = _gpsUtil.GetUserLocation(user.UserId);
-        var attractions = _tourGuideService.GetNearByAttractions(visitedLocation);
+        var visitedLocation = await _gpsUtil.GetUserLocation(user.UserId);
+        var attractions = await _tourGuideService.GetNearByAttractions(visitedLocation);
 
         // Crée une liste pour stocker les objets JSON
         List<object> response = new();
@@ -54,7 +54,7 @@ public class TourGuideController : ControllerBase
             double distance = _rewardsService.GetDistance(visitedLocation.Location, attraction);
 
             // Les points de récompense pour cette attraction
-            _rewardsService.CalculateRewards(user);
+            await _rewardsService.CalculateRewards(user);
 
             // Obtient les points de récompense pour cette attraction
             int rewardPoints = user.UserRewards.FirstOrDefault(r => r.Attraction.AttractionName == attraction.AttractionName)?.RewardPoints ?? 0;
