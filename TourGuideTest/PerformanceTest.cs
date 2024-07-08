@@ -1,14 +1,6 @@
 ﻿using GpsUtil.Location;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TourGuide.LibrairiesWrappers.Interfaces;
-using TourGuide.Services.Interfaces;
 using TourGuide.Users;
-using TourGuide.Utilities;
 using Xunit.Abstractions;
 
 namespace TourGuideTest
@@ -49,20 +41,21 @@ namespace TourGuideTest
         {
             // Voici les mesures de performance que nous souhaitons atteindre 
             // On peut ici augmenter le nombre d'utilisateurs pour tester les performances
-            _fixture.Initialize(10);
+            _fixture.Initialize(1000);
 
             List<User> allUsers = _fixture.TourGuideService.GetAllUsers();
 
-            Stopwatch stopWatch = new Stopwatch();
+            Stopwatch stopWatch = new();
             stopWatch.Start();
-            
-            /*foreach (var user in allUsers)
+
+            var tasks = new List<Task>();
+            foreach (var user in allUsers)
             {
-                _fixture.TourGuideService.TrackUserLocation(user);
-            }*/
+                tasks.Add(_fixture.TourGuideService.TrackUserLocation(user));
+            }
 
             // Utilisons Task.Run pour déplacer le travail de suivi de l’emplacement de l’utilisateur sur un autre thread.
-            var tasks = allUsers.Select(user => Task.Run(async () => await _fixture.TourGuideService.TrackUserLocation(user)));
+            // var tasks = allUsers.Select(user => Task.Run(async () => await _fixture.TourGuideService.TrackUserLocation(user)));
             // Utilisons Task.WhenAll pour attendre que toutes les tâches se terminent
             await Task.WhenAll(tasks);
 
@@ -79,26 +72,25 @@ namespace TourGuideTest
         {
             // Voici les mesures de performance que nous souhaitons atteindre 
             // On peut ici augmenter le nombre d'utilisateurs pour tester les performances
-            _fixture.Initialize(10);
+            _fixture.Initialize(100000);
 
-            Stopwatch stopWatch = new Stopwatch();
+            Stopwatch stopWatch = new();
             stopWatch.Start();
 
-            List<Attraction> attractions = await _fixture.GpsUtil.GetAttractions();
-            Attraction attraction = attractions[0];
+            var attractions = await _fixture.GpsUtil.GetAttractions();
             List<User> allUsers = _fixture.TourGuideService.GetAllUsers();
-            allUsers.ForEach(u => u.AddToVisitedLocations(new VisitedLocation(u.UserId, attraction, DateTime.Now)));
 
-            /*allUsers.ForEach(u => _fixture.RewardsService.CalculateRewards(u));*/
-            // Utilisons Task.Run pour déplacer le travail de calcul des récompenses sur un autre thread.
-            var tasks = allUsers.Select(user => Task.Run(async () => await _fixture.RewardsService.CalculateRewards(user)));
-            // Utilisons Task.WhenAll pour attendre que toutes les tâches se terminent
-            await Task.WhenAll(tasks);
+            allUsers.ForEach(u => u.AddToVisitedLocations(new VisitedLocation(u.UserId, attractions[0], DateTime.Now)));
 
+            var tasks = new List<Task>();
             foreach (var user in allUsers)
             {
-                Assert.True(user.UserRewards.Count > 0);
+                tasks.Add(_fixture.RewardsService.CalculateRewards(user));
             }
+            // Utilisons Task.WhenAll pour attendre que toutes les tâches se terminent
+            await Task.WhenAll(tasks);
+            allUsers.ForEach(user => Assert.True(user.UserRewards.Count > 0));
+
             stopWatch.Stop();
             _fixture.TourGuideService.Tracker.StopTracking();
 

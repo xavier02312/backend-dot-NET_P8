@@ -1,12 +1,5 @@
 ﻿using GpsUtil.Location;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TourGuide.Services;
 using TourGuide.Users;
-using TourGuide.Utilities;
 using TripPricer;
 
 namespace TourGuideTest
@@ -86,7 +79,7 @@ namespace TourGuideTest
         }
 
         [Fact]
-        public async void GetNearbyAttractions()
+        public async Task GetNearbyAttractions()
         {
             _fixture.Initialize(0);
             var user = new User(Guid.NewGuid(), "jon", "000", "jon@tourGuide.com");
