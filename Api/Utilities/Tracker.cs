@@ -35,7 +35,8 @@ public class Tracker
 
             stopwatch.Start();
 
-            /*users.ForEach(u => _tourGuideService.TrackUserLocation(u));*/
+            /*users.ForEach(u => _tourGuideService.TrackUserLocation(u)); code origine */
+
             // Utilisons Task.Run pour déplacer le travail de suivi de l’emplacement de l’utilisateur sur un autre thread.
             var tasks = users.Select(user => Task.Run(async () => await _tourGuideService.TrackUserLocation(user)));
             // Utilisons Task.WhenAll pour attendre que toutes les tâches se terminent

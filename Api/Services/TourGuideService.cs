@@ -1,6 +1,4 @@
 ﻿using GpsUtil.Location;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 using System.Globalization;
 using TourGuide.LibrairiesWrappers.Interfaces;
 using TourGuide.Services.Interfaces;

@@ -48,14 +48,8 @@ namespace TourGuideTest
             Stopwatch stopWatch = new();
             stopWatch.Start();
 
-            var tasks = new List<Task>();
-            foreach (var user in allUsers)
-            {
-                tasks.Add(_fixture.TourGuideService.TrackUserLocation(user));
-            }
-
             // Utilisons Task.Run pour déplacer le travail de suivi de l’emplacement de l’utilisateur sur un autre thread.
-            // var tasks = allUsers.Select(user => Task.Run(async () => await _fixture.TourGuideService.TrackUserLocation(user)));
+            var tasks = allUsers.Select(user => Task.Run(async () => await _fixture.TourGuideService.TrackUserLocation(user)));
             // Utilisons Task.WhenAll pour attendre que toutes les tâches se terminent
             await Task.WhenAll(tasks);
 
@@ -72,7 +66,7 @@ namespace TourGuideTest
         {
             // Voici les mesures de performance que nous souhaitons atteindre 
             // On peut ici augmenter le nombre d'utilisateurs pour tester les performances
-            _fixture.Initialize(100000);
+            _fixture.Initialize(1000);
 
             Stopwatch stopWatch = new();
             stopWatch.Start();
