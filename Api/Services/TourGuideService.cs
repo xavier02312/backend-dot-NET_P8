@@ -99,22 +99,31 @@ public class TourGuideService : ITourGuideService
         return visitedLocation;
     }
 
+    // Cette classe permet de stocker une attraction et sa distance
+    internal class AttractionDistance
+    {
+        public Attraction Attraction { get; set; }
+        public double Distance { get; set; }
+
+        public AttractionDistance(Attraction attraction, double distance)
+        {
+            Attraction = attraction;
+            Distance = distance;
+        }
+    }
     public async Task<List<Attraction>> GetNearByAttractions(VisitedLocation visitedLocation) /* ici perf */
     {
-        List<Attraction> nearbyAttractions = new ();
-        foreach (var attraction in await _gpsUtil.GetAttractions())/* j'ai supprimer le if */
+        List<Attraction> nearbyAttractions = await _gpsUtil.GetAttractions();
+        List<AttractionDistance> attractionsDistance = new();
+
+        for ( int i = 0; i < nearbyAttractions.Count; i++ )
         {
-            _rewardsService.IsWithinAttractionProximity(attraction, visitedLocation.Location);
-            
-                nearbyAttractions.Add(attraction);
-                if (nearbyAttractions.Count == 5) // arrête d'ajouter des attractions une fois que nous en avons 5
-                {
-                    break;
-                }
-            
+            attractionsDistance.Add(new AttractionDistance(
+                nearbyAttractions[i],
+                _rewardsService.GetDistance(nearbyAttractions[i], visitedLocation.Location)));
         }
 
-        return nearbyAttractions;
+        return attractionsDistance.OrderBy(a => a.Distance).Select(b => b.Attraction).Take(5).ToList();
     }
 
     private void AddShutDownHook()
