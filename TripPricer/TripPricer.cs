@@ -10,7 +10,7 @@ public class TripPricer
         HashSet<string> providersUsed = new();
 
         // Sleep to simulate some latency
-        Thread.Sleep(ThreadLocalRandom.Current.Next(1, 50));
+        Thread.Sleep(ThreadLocalRandom.Current.Next(1, 1500));
 
         for (int i = 0; i < 10; i++)  /* Change this line (5)  */
         {
